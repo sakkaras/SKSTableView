@@ -130,7 +130,7 @@
 				A5EE936D186C5A2200811B16 /* ViewController.h */,
 				A5EE936E186C5A2200811B16 /* ViewController.m */,
 				A5EE936F186C5A2200811B16 /* ViewController.xib */,
-				A5EE9369186C591700811B16 /* SKSTableView */,
+				A5EE9369186C591700811B16 /* SKSTableViewImp */,
 				A5EE934C186C590900811B16 /* Images.xcassets */,
 				A5EE9341186C590900811B16 /* Supporting Files */,
 			);
@@ -166,7 +166,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		A5EE9369186C591700811B16 /* SKSTableView */ = {
+		A5EE9369186C591700811B16 /* SKSTableViewImp */ = {
 			isa = PBXGroup;
 			children = (
 				A5EE936A186C593B00811B16 /* SKSTableView.h */,
@@ -178,7 +178,7 @@
 				A5EE9375186C621200811B16 /* expandableImage.png */,
 				A5EE9377186C794B00811B16 /* expandableImage@2x.png */,
 			);
-			name = SKSTableView;
+			name = SKSTableViewImp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
