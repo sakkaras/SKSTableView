@@ -7,5 +7,5 @@ In order to use the **SKSTableView**, just drag&drop the 'SKSTableViewImp' folde
 
 Sample screenshot:
 
-![](https://github.com/sakkaras/SKSTableView/blob/master/screenshot.PNG)
+![](https://raw2.github.com/sakkaras/SKSTableView/master/screenshot.PNG)
 
