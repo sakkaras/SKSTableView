@@ -5,3 +5,7 @@ SKSTableView
 
 In order to use the **SKSTableView**, just drag&drop the 'SKSTableViewImp' folder into your project folder.
 
+Sample screenshot:
+
+![](https://github.com/sakkaras/SKSTableView/blob/master/screenshot.PNG)
+

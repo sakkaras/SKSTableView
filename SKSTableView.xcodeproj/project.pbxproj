@@ -361,6 +361,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -393,6 +397,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -401,8 +409,13 @@
 		A5EE9364186C590900811B16 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/netmera/Documents/Developer/Open\\ Source\\ Projects/SKSTableView/NetmeraSDK",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SKSTableView/SKSTableView-Prefix.pch";
 				INFOPLIST_FILE = "SKSTableView/SKSTableView-Info.plist";
@@ -416,8 +429,13 @@
 		A5EE9365186C590900811B16 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/netmera/Documents/Developer/Open\\ Source\\ Projects/SKSTableView/NetmeraSDK",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SKSTableView/SKSTableView-Prefix.pch";
 				INFOPLIST_FILE = "SKSTableView/SKSTableView-Info.plist";
