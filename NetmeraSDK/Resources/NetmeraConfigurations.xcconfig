@@ -1,0 +1,2 @@
+OTHER_LDFLAGS = $(inherited) -framework CoreGraphics -framework SystemConfiguration -framework CoreLocation -framework MobileCoreServices -framework CFNetwork -framework CoreTelephony -weak_framework QuartzCore -weak_framework Security -weak_framework AdSupport -weak_framework Social -weak_framework Accounts -weak_framework Twitter -lsqlite3 -lxml2 -lz
+HEADER_SEARCH_PATHS = $(inherited) $(SDKROOT)/usr/include/libxml2
