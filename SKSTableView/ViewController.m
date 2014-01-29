@@ -46,6 +46,9 @@
     [super viewDidLoad];
 
     self.tableView.SKSTableViewDelegate = self;
+    
+    // In order to expand just one cell at a time. If you set this value YES, when you expand an cell, the already-expanded cell is collapsed automatically.
+    self.tableView.shouldExpandOnlyOneCell = YES;
 }
 
 - (void)didReceiveMemoryWarning

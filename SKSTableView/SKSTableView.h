@@ -73,6 +73,14 @@
  */
 @property (nonatomic, weak) id <SKSTableViewDelegate> SKSTableViewDelegate;
 
+/**
+ * A Boolean value indicating whether only one cell can be expanded at a time.
+ *
+ *  @discussion When set to YES, already-expanded cell is collapsed automatically before newly-selected cell is being expanded. 
+ *      The default value for this property is NO.
+ */
+@property (nonatomic, assign) BOOL shouldExpandOnlyOneCell;
+
 @end
 
 

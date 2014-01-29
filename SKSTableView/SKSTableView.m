@@ -49,6 +49,7 @@
     self = [super initWithFrame:frame];
     
     if (self) {
+        _shouldExpandOnlyOneCell = NO;
     }
     
     return self;
@@ -248,17 +249,24 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    __block SKSTableViewCell *cell = (SKSTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    SKSTableViewCell *cell = (SKSTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     
     if ([cell isKindOfClass:[SKSTableViewCell class]] && cell.isExpandable) {
         
         cell.isExpanded = !cell.isExpanded;
         
-        NSInteger numberOfSubRows = [self numberOfSubRowsAtIndexPath:indexPath];
+        NSIndexPath *_indexPath = indexPath;
+        if (cell.isExpanded && self.shouldExpandOnlyOneCell) {
+            
+            _indexPath = [self correspondingIndexPathForRowAtIndexPath:indexPath];
+            [self collapseCurrentlyExpandedIndexPaths];
+        }
+        
+        NSInteger numberOfSubRows = [self numberOfSubRowsAtIndexPath:_indexPath];
         
         NSMutableArray *indexPaths = [NSMutableArray array];
-        NSInteger row = indexPath.row;
-        NSInteger section = indexPath.section;
+        NSInteger row = _indexPath.row;
+        NSInteger section = _indexPath.section;
         
         for (NSInteger index = 1; index <= numberOfSubRows; index++) {
             
@@ -268,32 +276,17 @@
         
         if (cell.isExpanded) {
             
-            [self setIsExpanded:YES forCellAtIndexPath:indexPath];
-            [self insertExpandedIndexPaths:indexPaths forSection:indexPath.section];
-            [tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+            [self setIsExpanded:YES forCellAtIndexPath:_indexPath];
+            [self insertExpandedIndexPaths:indexPaths forSection:_indexPath.section];
             
         } else {
             
-            [self setIsExpanded:NO forCellAtIndexPath:indexPath];
-            [self removeExpandedIndexPaths:indexPaths forSection:indexPath.section];
-            [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+            [self setIsExpanded:NO forCellAtIndexPath:_indexPath];
+            [self removeExpandedIndexPaths:indexPaths forSection:_indexPath.section];
             
         }
         
-        [UIView animateWithDuration:0.2 animations:^{
-            if (cell.isExpanded) {
-                
-                cell.accessoryView.transform = CGAffineTransformMakeRotation(M_PI);
-                
-            } else {
-                cell.accessoryView.transform = CGAffineTransformMakeRotation(0);
-            }
-        } completion:^(BOOL finished) {
-            
-            if (!cell.isExpanded)
-                [cell removeIndicatorView];
-            
-        }];
+        [self accessoryViewAnimationForCell:cell];
         
     }
 }
@@ -637,6 +630,10 @@
     }
     
     [self sortExpandedIndexPathsForSection:section];
+    
+    // Reload TableView
+    [self insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+    
 }
 
 
@@ -661,6 +658,25 @@
     }
     
     [self sortExpandedIndexPathsForSection:section];
+    
+    // Reload Tableview
+    [self deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+    
+}
+
+- (void)collapseCurrentlyExpandedIndexPaths
+{
+    NSArray *expandedCells = [self.expandableCells allKeysForObject:[NSNumber numberWithBool:YES]];
+    
+    if (expandedCells.count > 0) {
+        NSIndexPath *indexPath = [expandedCells firstObject];
+        [self.expandableCells setObject:[NSNumber numberWithBool:NO] forKey:indexPath];
+        [self removeExpandedIndexPaths:[self.expandedIndexPaths[indexPath.section] copy] forSection:indexPath.section];
+    
+        SKSTableViewCell *cell = (SKSTableViewCell *)[self cellForRowAtIndexPath:indexPath];
+        cell.isExpanded = NO;
+        [self accessoryViewAnimationForCell:cell];
+    }
 }
 
 - (void)sortExpandedIndexPathsForSection:(NSInteger)section
@@ -678,6 +694,26 @@
                 return (NSComparisonResult)NSOrderedDescending;
             
         }
+    }];
+}
+
+- (void)accessoryViewAnimationForCell:(SKSTableViewCell *)cell
+{
+    __block SKSTableViewCell *_cell = cell;
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        if (_cell.isExpanded) {
+            
+            _cell.accessoryView.transform = CGAffineTransformMakeRotation(M_PI);
+            
+        } else {
+            _cell.accessoryView.transform = CGAffineTransformMakeRotation(0);
+        }
+    } completion:^(BOOL finished) {
+        
+        if (!_cell.isExpanded)
+            [_cell removeIndicatorView];
+        
     }];
 }
 
