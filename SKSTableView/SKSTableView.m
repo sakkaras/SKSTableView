@@ -669,14 +669,30 @@
     NSArray *expandedCells = [self.expandableCells allKeysForObject:[NSNumber numberWithBool:YES]];
     
     if (expandedCells.count > 0) {
-        NSIndexPath *indexPath = [expandedCells firstObject];
-        [self.expandableCells setObject:[NSNumber numberWithBool:NO] forKey:indexPath];
-        [self removeExpandedIndexPaths:[self.expandedIndexPaths[indexPath.section] copy] forSection:indexPath.section];
-    
-        SKSTableViewCell *cell = (SKSTableViewCell *)[self cellForRowAtIndexPath:indexPath];
-        cell.isExpanded = NO;
-        [self accessoryViewAnimationForCell:cell];
+        
+        __weak SKSTableView *_self = self;
+        [expandedCells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSIndexPath *indexPath = (NSIndexPath *)obj;
+            [_self.expandableCells setObject:[NSNumber numberWithBool:NO] forKey:indexPath];
+            
+            if ([_self.expandedIndexPaths[indexPath.section] count] > 0)
+                [_self removeExpandedIndexPaths:[_self.expandedIndexPaths[indexPath.section] copy] forSection:indexPath.section];
+            
+            SKSTableViewCell *cell = (SKSTableViewCell *)[_self cellForRowAtIndexPath:indexPath];
+            cell.isExpanded = NO;
+            [_self accessoryViewAnimationForCell:cell];
+        }];
     }
+}
+
+- (BOOL)isExpandedForCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSIndexPath *tempIndexPath = [self correspondingIndexPathForRowAtIndexPath:indexPath];
+    
+    if ([[self.expandableCells allKeys] containsObject:tempIndexPath])
+        return [[self.expandableCells objectForKey:tempIndexPath] boolValue];
+        
+    return NO;
 }
 
 - (void)sortExpandedIndexPathsForSection:(NSInteger)section
@@ -735,7 +751,7 @@ static void *SubRowObjectKey;
 
 - (void)setSubRow:(NSInteger)subRow
 {
-    id subRowObj = [NSNumber numberWithInteger:subRow];
+    NSString *subRowObj = [NSString stringWithFormat:@"%d", subRow];
     objc_setAssociatedObject(self, SubRowObjectKey, subRowObj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

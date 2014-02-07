@@ -18,6 +18,8 @@
 
 @class SKSTableView;
 
+@class SKSTableViewCell;
+
 #pragma mark - SKSTableViewDelegate
 
 @protocol SKSTableViewDelegate <UITableViewDataSource, UITableViewDelegate>
@@ -80,6 +82,15 @@
  *      The default value for this property is NO.
  */
 @property (nonatomic, assign) BOOL shouldExpandOnlyOneCell;
+
+/**
+ * Returns the boolean value which indicates whether the cell at the given index path is expanded or not.
+ *
+ *  @discussion This method can be used to check the cell's expanded state especially for the cells returned from 
+ *      tableView:dequeueReusableCellWithIdentifier: since it can be return wrong isExpanded values. Moreover, it is highly recommended 
+ *      to set isExpandable property for the cells every time a SKSTableViewCell insance created.
+ */
+- (BOOL)isExpandedForCellAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
