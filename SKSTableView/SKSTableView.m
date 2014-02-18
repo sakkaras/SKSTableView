@@ -11,6 +11,8 @@
 #import "SKSTableViewCellIndicator.h"
 #import <objc/runtime.h>
 
+CGFloat const rowHeight = 44.0f;
+
 #pragma mark - NSArray (SKSTableView)
 
 @interface NSMutableArray (SKSTableView)
@@ -339,13 +341,33 @@
 //        [_SKSTableViewDelegate tableView:tableView didEndDisplayingFooterView:view forSection:section];
 //}
 //
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)])
-//        [_SKSTableViewDelegate tableView:tableView heightForRowAtIndexPath:indexPath];
-//    
-//    return [tableView rowHeight];
-//}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (![self.expandedIndexPaths[indexPath.section] containsObject:indexPath]) {
+        
+        if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
+         
+            NSIndexPath *mainIndexPath = [self correspondingIndexPathForRowAtIndexPath:indexPath];
+            return [_SKSTableViewDelegate tableView:tableView heightForRowAtIndexPath:mainIndexPath];
+            
+        }
+        
+        return rowHeight;
+        
+    } else {
+        
+        if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:heightForSubRowAtIndexPath:)]) {
+            
+            NSIndexPath *subIndexPath = [self correspondingIndexPathForSubRowAtIndexPath:indexPath];
+            return [_SKSTableViewDelegate tableView:(SKSTableView *)tableView heightForSubRowAtIndexPath:subIndexPath];
+            
+        }
+        
+        return rowHeight;
+        
+    }
+    
+}
 //
 //- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 //{
@@ -751,7 +773,7 @@ static void *SubRowObjectKey;
 
 - (void)setSubRow:(NSInteger)subRow
 {
-    NSString *subRowObj = [NSString stringWithFormat:@"%d", subRow];
+    id subRowObj = [NSNumber numberWithInteger:subRow];
     objc_setAssociatedObject(self, SubRowObjectKey, subRowObj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

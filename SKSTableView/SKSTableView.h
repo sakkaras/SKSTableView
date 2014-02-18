@@ -63,6 +63,24 @@
  */
 - (UITableViewCell *)tableView:(SKSTableView *)tableView cellForSubRowAtIndexPath:(NSIndexPath *)indexPath;
 
+@optional
+
+/*
+ * Asks the delegate for the height to use for a row at the given indexPath.
+ *
+ *  @param tableView The instance of SKSTableView class which delegate it set.
+ *
+ *  @param indexPath The indexPath for the subrow. It has three properties that shows the exact position of the subrow cell.
+ *                      These properties are named as section, row and subrow, all of which refers to the index of the object
+ *                      at the content array defined as data source of the table view.
+ *
+ *  @return A nonnegative floating-point value that specifies the height (in points) that row should be.
+ *
+ *  @discussion The indexPath value refers to the exact location explained in the discussion section of tableView:cellForSubRowAtIndexPath:
+ *                  delegate method. You should adjust height value accordingly. Default value is 44.0 points.
+ */
+- (CGFloat)tableView:(SKSTableView *)tableView heightForSubRowAtIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
 
@@ -93,7 +111,6 @@
 - (BOOL)isExpandedForCellAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
-
 
 #pragma mark - NSIndexPath (SKSTableView)
 

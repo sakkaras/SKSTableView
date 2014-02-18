@@ -108,4 +108,10 @@
     return cell;
 }
 
+- (CGFloat)tableView:(SKSTableView *)tableView heightForSubRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Returns 60.0 points for all subrows.
+    return 60.0f;
+}
+
 @end
