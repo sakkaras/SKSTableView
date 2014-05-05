@@ -21,8 +21,8 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self setIsExpandable:NO];
-        [self setIsExpanded:NO];
+        self.expandable = YES;
+        self.expanded = NO;
     }
     return self;
 }
@@ -58,12 +58,12 @@ static UIImage *_image = nil;
     return button;
 }
 
-- (void)setIsExpandable:(BOOL)isExpandable
+- (void)setExpandable:(BOOL)isExpandable
 {
     if (isExpandable)
         [self setAccessoryView:[self expandableView]];
     
-    _isExpandable = isExpandable;
+    _expandable = isExpandable;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -85,12 +85,34 @@ static UIImage *_image = nil;
 - (void)removeIndicatorView
 {
     id indicatorView = [self.contentView viewWithTag:kIndicatorViewTag];
-    [indicatorView removeFromSuperview];
+    if (indicatorView)
+    {
+        [indicatorView removeFromSuperview];
+        indicatorView = nil;
+    }
 }
 
 - (BOOL)containsIndicatorView
 {
     return [self.contentView viewWithTag:kIndicatorViewTag] ? YES : NO;
+}
+
+- (void)accessoryViewAnimation
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        if (self.isExpanded) {
+            
+            self.accessoryView.transform = CGAffineTransformMakeRotation(M_PI);
+            
+        } else {
+            self.accessoryView.transform = CGAffineTransformMakeRotation(0);
+        }
+    } completion:^(BOOL finished) {
+        
+        if (!self.isExpanded)
+            [self removeIndicatorView];
+        
+    }];
 }
 
 @end

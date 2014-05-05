@@ -29,7 +29,7 @@
 /**
  * Returns the number of the subrows for the expandable row at the given index path.
  *
- *  @param tableView The instance of SKSTableView class which delegate is set.
+ *  @param tableView The instance of SKSTableView class.
  *
  *  @param indexPath The index path of the expandable row. It is the value for the expandable row before expanding.
  *
@@ -40,7 +40,7 @@
 /**
  * Returns the instance of UITableViewCell object for the cell at the given indexPath.
  *
- *  @param tableView The instance of SKSTableView class which delegate it set.
+ *  @param tableView The instance of SKSTableView class.
  *
  *  @param indexPath The index path for the subrow. It has three properties that shows the exact position of the subrow cell.
  *                      These properties are named as section, row and subrow, all of which refers to the index of the object 
@@ -68,7 +68,7 @@
 /*
  * Asks the delegate for the height to use for a row at the given indexPath.
  *
- *  @param tableView The instance of SKSTableView class which delegate it set.
+ *  @param tableView The instance of SKSTableView class.
  *
  *  @param indexPath The indexPath for the subrow. It has three properties that shows the exact position of the subrow cell.
  *                      These properties are named as section, row and subrow, all of which refers to the index of the object
@@ -80,6 +80,17 @@
  *                  delegate method. You should adjust height value accordingly. Default value is 44.0 points.
  */
 - (CGFloat)tableView:(SKSTableView *)tableView heightForSubRowAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ * Tells the delegate that the specified subrow is now selected.
+ *
+ *  @param tableView The instance of SKSTableView class.
+ *
+ *  @param indexPath The indexPath for the subrow. It has three properties that shows the exact position of the 
+ *   subrow cell. These properties are named as section, row and subrow, all of which refers to the index of the
+ *   object at the content array defined as data source of the table view.
+ */
+- (void)tableView:(SKSTableView *)tableView didSelectSubRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -102,13 +113,9 @@
 @property (nonatomic, assign) BOOL shouldExpandOnlyOneCell;
 
 /**
- * Returns the boolean value which indicates whether the cell at the given index path is expanded or not.
- *
- *  @discussion This method can be used to check the cell's expanded state especially for the cells returned from 
- *      tableView:dequeueReusableCellWithIdentifier: since it can be return wrong isExpanded values. Moreover, it is highly recommended 
- *      to set isExpandable property for the cells every time a SKSTableViewCell insance created.
+ * Collapses all currently-expanded cells in the tableview altogether. No subrow is displayed, just main rows.
  */
-- (BOOL)isExpandedForCellAtIndexPath:(NSIndexPath *)indexPath;
+- (void)collapseCurrentlyExpandedIndexPaths;
 
 @end
 
