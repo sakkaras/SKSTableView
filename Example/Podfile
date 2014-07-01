@@ -1,0 +1,10 @@
+target 'SKSTableView', :exclusive => true do
+  pod "SKSTableView", :path => "../"
+end
+
+target 'Tests', :exclusive => true do
+  pod "SKSTableView", :path => "../"
+
+  pod 'Specta', '~> 0.2.1'
+  pod 'Expecta'
+end
