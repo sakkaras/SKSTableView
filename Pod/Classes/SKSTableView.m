@@ -683,6 +683,40 @@ CGFloat const kDefaultCellHeight = 44.0f;
     [self deleteRowsAtIndexPaths:totalExpandedIndexPaths withRowAnimation:UITableViewRowAnimationTop];
 }
 
+- (NSIndexPath *)subrowIndexPathFromIndexPath:(NSIndexPath *)indexPath
+{
+    return [self correspondingIndexPathForRowAtIndexPath:indexPath];
+}
+
+- (NSIndexPath *) indexPathFromSubrowIndexPath:(NSIndexPath *)indexPath
+{
+    __block NSIndexPath *correspondingIndexPath = nil;
+    __block NSInteger expandedSubrows = 0;
+    
+    NSArray *rows = self.expandableCells[@(indexPath.section)];
+    [rows enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (idx < indexPath.row)
+        {
+            BOOL isExpanded = [obj[kIsExpandedKey] boolValue];
+            NSInteger numberOfSubrows = 0;
+            if (isExpanded)
+            {
+                numberOfSubrows = [obj[kSubrowsKey] integerValue];
+            }
+        
+            expandedSubrows += numberOfSubrows;
+        }
+        else
+        {
+            correspondingIndexPath = [NSIndexPath indexPathForRow:idx + expandedSubrows + indexPath.subRow + 1  /* 1 for main row */
+                                                           inSection:indexPath.section];
+            
+            *stop = YES;
+        }
+    }];
+    
+    return correspondingIndexPath;
+}
 @end
 
 #pragma mark - NSIndexPath (SKSTableView)

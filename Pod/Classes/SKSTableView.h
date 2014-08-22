@@ -117,6 +117,9 @@
  */
 - (void)collapseCurrentlyExpandedIndexPaths;
 
+
+- (NSIndexPath *) indexPathFromSubrowIndexPath:(NSIndexPath *)subrowIndexPath;
+- (NSIndexPath *) subrowIndexPathFromIndexPath:(NSIndexPath *)indexPath;
 @end
 
 #pragma mark - NSIndexPath (SKSTableView)
