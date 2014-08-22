@@ -1,0 +1,20 @@
+PODS:
+  - Expecta (0.3.0)
+  - SKSTableView (0.1.0)
+  - Specta (0.2.1)
+
+DEPENDENCIES:
+  - Expecta
+  - SKSTableView (from `../`)
+  - Specta (~> 0.2.1)
+
+EXTERNAL SOURCES:
+  SKSTableView:
+    :path: ../
+
+SPEC CHECKSUMS:
+  Expecta: ce8a51b9fad15a2cd573b291cb2909aaed865350
+  SKSTableView: e3faba8555fe5f25ad2f9d7c791e9d2bf602a3dc
+  Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
+
+COCOAPODS: 0.33.1
