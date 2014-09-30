@@ -124,7 +124,10 @@ CGFloat const kDefaultCellHeight = 44.0f;
 {
     [self refreshData];
     
-    [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    if (indexPath.section < [self numberOfSections] && indexPath.row < [self numberOfRowsInSection:indexPath.section])
+    {
+        [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
 }
 
 #pragma mark - UITableViewDataSource
