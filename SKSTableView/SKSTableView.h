@@ -92,6 +92,17 @@
  */
 - (void)tableView:(SKSTableView *)tableView didSelectSubRowAtIndexPath:(NSIndexPath *)indexPath;
 
+/**
+ * Asks the delegate whether the subrows of the cell at the given index path should be expanded initially.
+ *
+ *  @param tableView The instance of SKSTableView class.
+ *
+ *  @param indexPath The index path of the row which subrows to be expanded while loading the data into the tableview.
+ *
+ *  @return The boolean value indicating the initial expandability of the row at the given index path.
+ */
+- (BOOL)tableView:(SKSTableView *)tableView shouldExpandSubRowsOfCellAtIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
 

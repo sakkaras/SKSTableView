@@ -94,7 +94,13 @@ CGFloat const kDefaultCellHeight = 44.0f;
                 NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
                 NSInteger numberOfSubrows = [self.SKSTableViewDelegate tableView:self
                                                       numberOfSubRowsAtIndexPath:rowIndexPath];
-                NSMutableDictionary *rowInfo = [NSMutableDictionary dictionaryWithObjects:@[@(NO), @(numberOfSubrows)]
+                BOOL isExpandedInitially = NO;
+                if ([self.SKSTableViewDelegate respondsToSelector:@selector(tableView:shouldExpandSubRowsOfCellAtIndexPath:)])
+                {
+                    isExpandedInitially = [self.SKSTableViewDelegate tableView:self shouldExpandSubRowsOfCellAtIndexPath:rowIndexPath];
+                }
+                
+                NSMutableDictionary *rowInfo = [NSMutableDictionary dictionaryWithObjects:@[@(isExpandedInitially), @(numberOfSubrows)]
                                                                                   forKeys:@[kIsExpandedKey, kSubrowsKey]];
 
                 [rows addObject:rowInfo];

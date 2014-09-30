@@ -95,6 +95,16 @@
     return [self.contents[indexPath.section][indexPath.row] count] - 1;
 }
 
+- (BOOL)tableView:(SKSTableView *)tableView shouldExpandSubRowsOfCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 1 && indexPath.row == 0)
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"SKSTableViewCell";
