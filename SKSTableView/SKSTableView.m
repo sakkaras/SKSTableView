@@ -107,6 +107,20 @@ CGFloat const kDefaultCellHeight = 44.0f;
     return _expandableCells;
 }
 
+- (void)refreshData
+{
+    self.expandableCells = nil;
+    
+    [super reloadData];
+}
+
+- (void)refreshDataWithScrollingToIndexPath:(NSIndexPath *)indexPath
+{
+    [self refreshData];
+    
+    [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
 #pragma mark - UITableViewDataSource
 
 #pragma mark - Required
