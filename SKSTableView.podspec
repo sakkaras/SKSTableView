@@ -11,13 +11,13 @@ Pod::Spec.new do |s|
                    DESC
 
   s.homepage     = "https://github.com/sakkaras/SKSTableView"
-  s.screenshots  = "https://github.com/sakkaras/SKSTableView/blob/master/screenshot.PNG"
+  s.screenshots  = "https://raw.githubusercontent.com/sakkaras/SKSTableView/master/screenshot.PNG"
   s.license      = "MIT"
-  s.author             =  "sakkaras"
-  s.platform     = :ios
-  s.source       = { :git => "https://github.com/sakkaras/SKSTableView.git"}
+  s.author       =  "sakkaras"
+  s.platform     = :ios, '7.0'
+  s.source       = { :git => "https://github.com/sakkaras/SKSTableView.git",:tag =>'0.0.1'}
   s.source_files  = "SKSTableView/SKSTableView.{h,m}","SKSTableView/SKSTableViewCell.{h,m}","SKSTableView/SKSTableViewCellIndicator.{h,m}"
-  s.resources = "expandableImage.png/*.png"
+  s.resources = "SKSTableView/*.png"
   s.requires_arc = true
 
 end
