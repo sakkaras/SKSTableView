@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "SKSTableView"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "An expandable table view."
 
   s.description  = <<-DESC
@@ -10,12 +10,12 @@ Pod::Spec.new do |s|
                    Main rows of your table view, which can be expandable or not must be instances of SKSTableViewCell class. Subrows can be instances of any class that is extended from UITableViewCellor or UITableViewCell itself.
                    DESC
 
-  s.homepage     = "https://github.com/sakkaras/SKSTableView"
+  s.homepage     = "https://github.com/weekwood/SKSTableView"
   s.screenshots  = "https://raw.githubusercontent.com/sakkaras/SKSTableView/master/screenshot.PNG"
   s.license      = "MIT"
   s.author       =  "sakkaras"
   s.platform     = :ios, '7.0'
-  s.source       = { :git => "https://github.com/sakkaras/SKSTableView.git",:tag =>'0.0.1'}
+  s.source       = { :git => "https://github.com/sakkaras/SKSTableView.git",:tag =>'0.0.2'}
   s.source_files  = "SKSTableView/SKSTableView.{h,m}","SKSTableView/SKSTableViewCell.{h,m}","SKSTableView/SKSTableViewCellIndicator.{h,m}"
   s.resources = "SKSTableView/*.png"
   s.requires_arc = true
