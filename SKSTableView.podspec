@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
                    Main rows of your table view, which can be expandable or not must be instances of SKSTableViewCell class. Subrows can be instances of any class that is extended from UITableViewCellor or UITableViewCell itself.
                    DESC
 
-  s.homepage     = "https://github.com/sakkaras/SKSTableView"
+  s.homepage     = "https://github.com/weekwood/SKSTableView"
   s.screenshots  = "https://raw.githubusercontent.com/sakkaras/SKSTableView/master/screenshot.PNG"
   s.license      = "MIT"
   s.author       =  "sakkaras"
