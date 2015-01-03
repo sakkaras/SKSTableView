@@ -102,7 +102,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
                 
                 NSMutableDictionary *rowInfo = [NSMutableDictionary dictionaryWithObjects:@[@(isExpandedInitially), @(numberOfSubrows)]
                                                                                   forKeys:@[kIsExpandedKey, kSubrowsKey]];
-
+                
                 [rows addObject:rowInfo];
             }
             
@@ -180,7 +180,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
             [expandableCell removeIndicatorView];
         }
         
-       return expandableCell;
+        return expandableCell;
     }
     else
     {
@@ -213,7 +213,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:titleForHeaderInSection:)])
 //        return [_SKSTableViewDelegate tableView:tableView titleForHeaderInSection:section];
-//    
+//
 //    return nil;
 //}
 //
@@ -221,7 +221,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:titleForFooterInSection:)])
 //        return [_SKSTableViewDelegate tableView:tableView titleForFooterInSection:section];
-//    
+//
 //    return nil;
 //}
 //
@@ -229,7 +229,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:canEditRowAtIndexPath:)])
 //        [_SKSTableViewDelegate tableView:tableView canEditRowAtIndexPath:indexPath];
-//    
+//
 //    return NO;
 //}
 //
@@ -237,7 +237,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:canMoveRowAtIndexPath:)])
 //        [_SKSTableViewDelegate tableView:tableView canMoveRowAtIndexPath:indexPath];
-//    
+//
 //    return NO;
 //}
 //
@@ -245,7 +245,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(sectionIndexTitlesForTableView:)])
 //        [_SKSTableViewDelegate sectionIndexTitlesForTableView:tableView];
-//    
+//
 //    return nil;
 //}
 //
@@ -253,7 +253,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:sectionForSectionIndexTitle:atIndex:)])
 //        [_SKSTableViewDelegate tableView:tableView sectionForSectionIndexTitle:title atIndex:index];
-//    
+//
 //    return 0;
 //}
 //
@@ -284,7 +284,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
         if (cell.isExpandable)
         {
             cell.expanded = !cell.isExpanded;
-        
+            
             NSIndexPath *_indexPath = indexPath;
             NSIndexPath *correspondingIndexPath = [self correspondingIndexPathForRowAtIndexPath:indexPath];
             if (cell.isExpanded && _shouldExpandOnlyOneCell)
@@ -292,21 +292,21 @@ CGFloat const kDefaultCellHeight = 44.0f;
                 _indexPath = correspondingIndexPath;
                 [self collapseCurrentlyExpandedIndexPaths];
             }
-        
+            
             if (_indexPath)
             {
                 NSInteger numberOfSubRows = [self numberOfSubRowsAtIndexPath:correspondingIndexPath];
-            
+                
                 NSMutableArray *expandedIndexPaths = [NSMutableArray array];
                 NSInteger row = _indexPath.row;
                 NSInteger section = _indexPath.section;
-            
+                
                 for (NSInteger index = 1; index <= numberOfSubRows; index++)
                 {
                     NSIndexPath *expIndexPath = [NSIndexPath indexPathForRow:row+index inSection:section];
                     [expandedIndexPaths addObject:expIndexPath];
                 }
-            
+                
                 if (cell.isExpanded)
                 {
                     [self setExpanded:YES forCellAtIndexPath:correspondingIndexPath];
@@ -317,7 +317,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
                     [self setExpanded:NO forCellAtIndexPath:correspondingIndexPath];
                     [self deleteRowsAtIndexPaths:expandedIndexPaths withRowAnimation:UITableViewRowAnimationTop];
                 }
-            
+                
                 [cell accessoryViewAnimation];
             }
         }
@@ -418,27 +418,27 @@ CGFloat const kDefaultCellHeight = 44.0f;
     }
 }
 //
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)])
-//        [_SKSTableViewDelegate tableView:tableView heightForHeaderInSection:section];
-//    
-//    return 0;
-//}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)])
+        return [_SKSTableViewDelegate tableView:tableView heightForHeaderInSection:section];
+    
+    return 0;
+}
 //
-//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-//{
-//    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:heightForFooterInSection:)])
-//        [_SKSTableViewDelegate tableView:tableView heightForFooterInSection:section];
-//    
-//    return 0;
-//}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:heightForFooterInSection:)])
+        return [_SKSTableViewDelegate tableView:tableView heightForFooterInSection:section];
+    
+    return 0;
+}
 //
 //- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:estimatedHeightForRowAtIndexPath:)])
 //        [_SKSTableViewDelegate tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
-//    
+//
 //    return 0;
 //}
 //
@@ -446,7 +446,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:estimatedHeightForHeaderInSection:)])
 //        [_SKSTableViewDelegate tableView:tableView estimatedHeightForHeaderInSection:section];
-//    
+//
 //    return 0;
 //}
 //
@@ -454,31 +454,31 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:estimatedHeightForFooterInSection:)])
 //        [_SKSTableViewDelegate tableView:tableView estimatedHeightForFooterInSection:section];
-//    
+//
 //    return 0;
 //}
 //
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-//{
-//    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:viewForHeaderInSection:)])
-//        [_SKSTableViewDelegate tableView:tableView viewForHeaderInSection:section];
-//    
-//    return nil;
-//}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:viewForHeaderInSection:)])
+        return [_SKSTableViewDelegate tableView:tableView viewForHeaderInSection:section];
+    
+    return nil;
+}
 //
-//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-//{
-//    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:viewForFooterInSection:)])
-//        [_SKSTableViewDelegate tableView:tableView viewForFooterInSection:section];
-//    
-//    return nil;
-//}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:viewForFooterInSection:)])
+        return [_SKSTableViewDelegate tableView:tableView viewForFooterInSection:section];
+    
+    return nil;
+}
 //
 //- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:shouldHighlightRowAtIndexPath:)])
 //        [_SKSTableViewDelegate tableView:tableView shouldHighlightRowAtIndexPath:indexPath];
-//    
+//
 //    return NO;
 //}
 //
@@ -498,7 +498,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:willSelectRowAtIndexPath:)])
 //        [_SKSTableViewDelegate tableView:tableView willSelectRowAtIndexPath:indexPath];
-//    
+//
 //    return nil;
 //}
 //
@@ -506,7 +506,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:willDeselectRowAtIndexPath:)])
 //        [_SKSTableViewDelegate tableView:tableView willDeselectRowAtIndexPath:indexPath];
-//    
+//
 //    return nil;
 //}
 //
@@ -520,7 +520,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:editingStyleForRowAtIndexPath:)])
 //        [_SKSTableViewDelegate tableView:tableView editingStyleForRowAtIndexPath:indexPath];
-//    
+//
 //    return UITableViewCellEditingStyleNone;
 //}
 //
@@ -528,7 +528,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:)])
 //        [_SKSTableViewDelegate tableView:tableView titleForDeleteConfirmationButtonForRowAtIndexPath:indexPath];
-//    
+//
 //    return nil;
 //}
 //
@@ -536,7 +536,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:shouldIndentWhileEditingRowAtIndexPath:)])
 //        [_SKSTableViewDelegate tableView:tableView shouldIndentWhileEditingRowAtIndexPath:indexPath];
-//    
+//
 //    return NO;
 //}
 //
@@ -556,7 +556,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:)])
 //        [_SKSTableViewDelegate tableView:tableView targetIndexPathForMoveFromRowAtIndexPath:sourceIndexPath toProposedIndexPath:proposedDestinationIndexPath];
-//    
+//
 //    return nil;
 //}
 //
@@ -564,7 +564,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:indentationLevelForRowAtIndexPath:)])
 //        [_SKSTableViewDelegate tableView:tableView indentationLevelForRowAtIndexPath:indexPath];
-//    
+//
 //    return 0;
 //}
 //
@@ -572,7 +572,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:shouldShowMenuForRowAtIndexPath:)])
 //        [_SKSTableViewDelegate tableView:tableView shouldShowMenuForRowAtIndexPath:indexPath];
-//    
+//
 //    return NO;
 //}
 //
@@ -580,7 +580,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:canPerformAction:forRowAtIndexPath:withSender:)])
 //        [_SKSTableViewDelegate tableView:tableView canPerformAction:action forRowAtIndexPath:indexPath withSender:sender];
-//    
+//
 //    return NO;
 //}
 //
@@ -632,7 +632,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
     
     NSArray *rows = self.expandableCells[@(indexPath.section)];
     [rows enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-
+        
         BOOL isExpanded = [obj[kIsExpandedKey] boolValue];
         NSInteger numberOfSubrows = 0;
         if (isExpanded)
@@ -647,9 +647,9 @@ CGFloat const kDefaultCellHeight = 44.0f;
         }
         else
         {
-             correspondingIndexPath = [NSIndexPath indexPathForSubRow:subrow
-                                                                inRow:idx
-                                                            inSection:indexPath.section];
+            correspondingIndexPath = [NSIndexPath indexPathForSubRow:subrow
+                                                               inRow:idx
+                                                           inSection:indexPath.section];
             
             *stop = YES;
         }
@@ -670,11 +670,11 @@ CGFloat const kDefaultCellHeight = 44.0f;
     NSMutableArray *totalExpandableIndexPaths = [NSMutableArray array];
     
     [self.expandableCells enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-       
+        
         __block NSInteger totalExpandedSubrows = 0;
         
         [obj enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-           
+            
             NSInteger currentRow = idx + totalExpandedSubrows;
             
             BOOL isExpanded = [obj[kIsExpandedKey] boolValue];
@@ -718,14 +718,16 @@ static void *SubRowObjectKey;
 
 - (NSInteger)subRow
 {
-    id subRowObj = objc_getAssociatedObject(self, SubRowObjectKey);
+    id myclass = [self class];
+    id subRowObj = objc_getAssociatedObject(myclass, SubRowObjectKey);
     return [subRowObj integerValue];
 }
 
 - (void)setSubRow:(NSInteger)subRow
 {
     id subRowObj = [NSNumber numberWithInteger:subRow];
-    objc_setAssociatedObject(self, SubRowObjectKey, subRowObj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    id myclass = [self class];
+    objc_setAssociatedObject(myclass, SubRowObjectKey, subRowObj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 + (NSIndexPath *)indexPathForSubRow:(NSInteger)subrow inRow:(NSInteger)row inSection:(NSInteger)section
@@ -737,4 +739,3 @@ static void *SubRowObjectKey;
 }
 
 @end
-
