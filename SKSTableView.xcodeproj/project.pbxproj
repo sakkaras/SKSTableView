@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D9CF1D21CA5879A007BD489 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D9CF1D11CA5879A007BD489 /* Launch Screen.storyboard */; };
 		A5C1F34D18783FB400D0D1DE /* SKSTableViewCellIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C1F34C18783FB400D0D1DE /* SKSTableViewCellIndicator.m */; };
 		A5EE933B186C590900811B16 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5EE933A186C590900811B16 /* Foundation.framework */; };
 		A5EE933D186C590900811B16 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5EE933C186C590900811B16 /* CoreGraphics.framework */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8D9CF1D11CA5879A007BD489 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		A5C1F34B18783FB400D0D1DE /* SKSTableViewCellIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableViewCellIndicator.h; sourceTree = "<group>"; };
 		A5C1F34C18783FB400D0D1DE /* SKSTableViewCellIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSTableViewCellIndicator.m; sourceTree = "<group>"; };
 		A5EE9337186C590900811B16 /* SKSTableView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SKSTableView.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,6 +132,7 @@
 				A5EE936D186C5A2200811B16 /* ViewController.h */,
 				A5EE936E186C5A2200811B16 /* ViewController.m */,
 				A5EE936F186C5A2200811B16 /* ViewController.xib */,
+				8D9CF1D11CA5879A007BD489 /* Launch Screen.storyboard */,
 				A5EE9369186C591700811B16 /* SKSTableViewImp */,
 				A5EE934C186C590900811B16 /* Images.xcassets */,
 				A5EE9341186C590900811B16 /* Supporting Files */,
@@ -256,6 +259,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D9CF1D21CA5879A007BD489 /* Launch Screen.storyboard in Resources */,
 				A5EE9345186C590900811B16 /* InfoPlist.strings in Resources */,
 				A5EE9371186C5A2200811B16 /* ViewController.xib in Resources */,
 				A5EE9376186C621200811B16 /* expandableImage.png in Resources */,
