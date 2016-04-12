@@ -320,21 +320,21 @@ CGFloat const kDefaultCellHeight = 44.0f;
             
                 [cell accessoryViewAnimation];
             }
-        }
-        
-        if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)])
-        {
-            NSIndexPath *correspondingIndexPath = [self correspondingIndexPathForRowAtIndexPath:indexPath];
+        }else{
+            if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)])
+            {
+                NSIndexPath *correspondingIndexPath = [self correspondingIndexPathForRowAtIndexPath:indexPath];
             
-            if (correspondingIndexPath.subRow == 0)
-            {
-                [_SKSTableViewDelegate tableView:tableView didSelectRowAtIndexPath:correspondingIndexPath];
+                if (correspondingIndexPath.subRow == 0)
+                {
+                    [_SKSTableViewDelegate tableView:tableView didSelectRowAtIndexPath:correspondingIndexPath];
+                }
+                else
+                {
+                    [_SKSTableViewDelegate tableView:self didSelectSubRowAtIndexPath:correspondingIndexPath];
+                }
             }
-            else
-            {
-                [_SKSTableViewDelegate tableView:self didSelectSubRowAtIndexPath:correspondingIndexPath];
-            }
-        }
+        }    
     }
     else
     {
