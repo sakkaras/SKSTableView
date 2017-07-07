@@ -142,7 +142,8 @@
  * Collapses all currently-expanded cells in the tableview altogether. No subrow is displayed, just main rows.
  */
 - (void)collapseCurrentlyExpandedIndexPaths;
-
+- (NSIndexPath *)correspondingIndexPathForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (NSIndexPath *) indexPathFromSubrowIndexPath:(NSIndexPath *)indexPath;
 @end
 
 #pragma mark - NSIndexPath (SKSTableView)

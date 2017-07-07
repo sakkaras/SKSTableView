@@ -32,13 +32,6 @@
     [super layoutSubviews];
     
     if (self.isExpanded) {
-        
-        if (![self containsIndicatorView])
-            [self addIndicatorView];
-        else {
-            [self removeIndicatorView];
-            [self addIndicatorView];
-        }
     }
 }
 
@@ -52,9 +45,7 @@ static UIImage *_image = nil;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     CGRect frame = CGRectMake(0.0, 0.0, _image.size.width, _image.size.height);
     button.frame = frame;
-    
     [button setBackgroundImage:_image forState:UIControlStateNormal];
-    
     return button;
 }
 
@@ -79,7 +70,7 @@ static UIImage *_image = nil;
     CGRect frame = CGRectMake((point.x - CGRectGetWidth(bounds) * 1.5), point.y * 1.4, CGRectGetWidth(bounds) * 3.0, CGRectGetHeight(self.bounds) - point.y * 1.4);
     SKSTableViewCellIndicator *indicatorView = [[SKSTableViewCellIndicator alloc] initWithFrame:frame];
     indicatorView.tag = kIndicatorViewTag;
-    [self.contentView addSubview:indicatorView];
+//    [self.contentView addSubview:indicatorView];
 }
 
 - (void)removeIndicatorView
@@ -101,11 +92,19 @@ static UIImage *_image = nil;
 {
     [UIView animateWithDuration:0.2 animations:^{
         if (self.isExpanded) {
-            
-            self.accessoryView.transform = CGAffineTransformMakeRotation(M_PI);
-            
+            if ([self.accessoryView isKindOfClass:[UIButton class]]) {
+                self.accessoryView.transform = CGAffineTransformMakeRotation(M_PI);
+            }else{
+                UIButton *button = (UIButton *)[self.accessoryView viewWithTag:999];
+                button.transform = CGAffineTransformMakeRotation(M_PI);
+            }
         } else {
-            self.accessoryView.transform = CGAffineTransformMakeRotation(0);
+            if ([self.accessoryView isKindOfClass:[UIButton class]]) {
+                self.accessoryView.transform = CGAffineTransformMakeRotation(0);
+            }else{
+                UIButton *button = (UIButton *)[self.accessoryView viewWithTag:999];
+                button.transform = CGAffineTransformMakeRotation(0);
+            }
         }
     } completion:^(BOOL finished) {
         

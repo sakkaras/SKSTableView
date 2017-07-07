@@ -136,7 +136,10 @@ CGFloat const kDefaultCellHeight = 44.0f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_SKSTableViewDelegate tableView:tableView numberOfRowsInSection:section] + [self numberOfExpandedSubrowsInSection:section];
+    if ([_SKSTableViewDelegate tableView:tableView numberOfRowsInSection:section] != 0) {
+        return [_SKSTableViewDelegate tableView:tableView numberOfRowsInSection:section] + [self numberOfExpandedSubrowsInSection:section];
+    }
+    return [_SKSTableViewDelegate tableView:tableView numberOfRowsInSection:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -145,6 +148,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
     if ([correspondingIndexPath subRow] == 0)
     {
         SKSTableViewCell *expandableCell = (SKSTableViewCell *)[_SKSTableViewDelegate tableView:tableView cellForRowAtIndexPath:correspondingIndexPath];
+        expandableCell.showsReorderControl = YES;
         if ([expandableCell respondsToSelector:@selector(setSeparatorInset:)])
         {
             expandableCell.separatorInset = UIEdgeInsetsZero;
@@ -156,14 +160,29 @@ CGFloat const kDefaultCellHeight = 44.0f;
         {
             expandableCell.expanded = isExpanded;
             
-            UIButton *expandableButton = (UIButton *)expandableCell.accessoryView;
-            [expandableButton addTarget:tableView
-                                 action:@selector(expandableButtonTouched:event:)
-                       forControlEvents:UIControlEventTouchUpInside];
+            if ([expandableCell.accessoryView isKindOfClass:[UIButton class]]) {
+                UIButton *expandableButton = (UIButton *)expandableCell.accessoryView;
+                [expandableButton addTarget:tableView
+                                     action:@selector(expandableButtonTouched:event:)
+                           forControlEvents:UIControlEventTouchUpInside];
+
+            }else{
+                UIButton *expandableButton = (UIButton *)[expandableCell.accessoryView viewWithTag:999];
+                [expandableButton addTarget:tableView
+                                     action:@selector(expandableButtonTouched:event:)
+                           forControlEvents:UIControlEventTouchUpInside];
+            }
+
+        
             
             if (isExpanded)
             {
-                expandableCell.accessoryView.transform = CGAffineTransformMakeRotation(M_PI);
+                if ([expandableCell.accessoryView isKindOfClass:[UIButton class]]) {
+                            expandableCell.accessoryView.transform = CGAffineTransformMakeRotation(M_PI);
+                }else{
+                    UIButton *button = (UIButton *)[expandableCell.accessoryView viewWithTag:999];
+                    button.transform = CGAffineTransformMakeRotation(M_PI);
+                }
             }
             else
             {
@@ -185,10 +204,8 @@ CGFloat const kDefaultCellHeight = 44.0f;
     else
     {
         UITableViewCell *cell = [_SKSTableViewDelegate tableView:(SKSTableView *)tableView cellForSubRowAtIndexPath:correspondingIndexPath];
-        cell.backgroundColor = [self separatorColor];
         cell.backgroundView = nil;
-        cell.indentationLevel = 2;
-        
+        cell.indentationLevel = 2;        
         return cell;
     }
 }
@@ -232,14 +249,14 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //
 //    return NO;
 //}
-//
-//- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:canMoveRowAtIndexPath:)])
-//        [_SKSTableViewDelegate tableView:tableView canMoveRowAtIndexPath:indexPath];
-//
-//    return NO;
-//}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:canMoveRowAtIndexPath:)])
+        [_SKSTableViewDelegate tableView:tableView canMoveRowAtIndexPath:indexPath];
+
+    return YES;
+}
 //
 //- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 //{
@@ -263,11 +280,11 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //        [_SKSTableViewDelegate tableView:tableView commitEditingStyle:editingStyle forRowAtIndexPath:indexPath];
 //}
 //
-//- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
-//{
-//    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:moveRowAtIndexPath:toIndexPath:)])
-//        [_SKSTableViewDelegate tableView:tableView moveRowAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
-//}
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:moveRowAtIndexPath:toIndexPath:)])
+        [_SKSTableViewDelegate tableView:tableView moveRowAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
+}
 
 #pragma mark - UITableViewDelegate
 
@@ -276,9 +293,35 @@ CGFloat const kDefaultCellHeight = 44.0f;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)])
+    {
+        NSIndexPath *correspondingIndexPath = [self correspondingIndexPathForRowAtIndexPath:indexPath];
+        
+        if (correspondingIndexPath.subRow == 0)
+        {
+            [_SKSTableViewDelegate tableView:tableView didSelectRowAtIndexPath:correspondingIndexPath];
+        }
+        else
+        {
+            [_SKSTableViewDelegate tableView:self didSelectSubRowAtIndexPath:correspondingIndexPath];
+        }
+    }
+
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
     SKSTableViewCell *cell = (SKSTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    
+
+    if (!cell.isExpanded) {
+        cell.separatorInset = (UIEdgeInsets){
+            0,CGRectGetWidth([[UIScreen mainScreen] bounds]),0,0
+        };
+    }else{
+        cell.separatorInset = (UIEdgeInsets){
+            0,10,0,0
+        };
+    }
     if ([cell respondsToSelector:@selector(isExpandable)])
     {
         if (cell.isExpandable)
@@ -321,38 +364,9 @@ CGFloat const kDefaultCellHeight = 44.0f;
                 [cell accessoryViewAnimation];
             }
         }
-        
-        if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)])
-        {
-            NSIndexPath *correspondingIndexPath = [self correspondingIndexPathForRowAtIndexPath:indexPath];
-            
-            if (correspondingIndexPath.subRow == 0)
-            {
-                [_SKSTableViewDelegate tableView:tableView didSelectRowAtIndexPath:correspondingIndexPath];
-            }
-            else
-            {
-                [_SKSTableViewDelegate tableView:self didSelectSubRowAtIndexPath:correspondingIndexPath];
-            }
-        }
-    }
-    else
-    {
-        if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:didSelectSubRowAtIndexPath:)])
-        {
-            NSIndexPath *correspondingIndexPath = [self correspondingIndexPathForRowAtIndexPath:indexPath];
-            
-            [_SKSTableViewDelegate tableView:self didSelectSubRowAtIndexPath:correspondingIndexPath];
-        }
-    }
-}
 
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
-{
-    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:accessoryButtonTappedForRowWithIndexPath:)])
-        [_SKSTableViewDelegate tableView:tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
-    
-    [self.delegate tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }
+
 }
 
 /*
@@ -516,13 +530,13 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //        [_SKSTableViewDelegate tableView:tableView didDeselectRowAtIndexPath:indexPath];
 //}
 //
-//- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:editingStyleForRowAtIndexPath:)])
-//        [_SKSTableViewDelegate tableView:tableView editingStyleForRowAtIndexPath:indexPath];
-//
-//    return UITableViewCellEditingStyleNone;
-//}
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:editingStyleForRowAtIndexPath:)])
+        [_SKSTableViewDelegate tableView:tableView editingStyleForRowAtIndexPath:indexPath];
+
+    return UITableViewCellEditingStyleNone;
+}
 //
 //- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 //{
@@ -532,14 +546,14 @@ CGFloat const kDefaultCellHeight = 44.0f;
 //    return nil;
 //}
 //
-//- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:shouldIndentWhileEditingRowAtIndexPath:)])
-//        [_SKSTableViewDelegate tableView:tableView shouldIndentWhileEditingRowAtIndexPath:indexPath];
-//
-//    return NO;
-//}
-//
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:shouldIndentWhileEditingRowAtIndexPath:)])
+        [_SKSTableViewDelegate tableView:tableView shouldIndentWhileEditingRowAtIndexPath:indexPath];
+
+    return NO;
+}
+
 //- (void)tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath
 //{
 //    if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:willBeginEditingRowAtIndexPath:)])
@@ -706,6 +720,42 @@ CGFloat const kDefaultCellHeight = 44.0f;
     [self deleteRowsAtIndexPaths:totalExpandedIndexPaths withRowAnimation:UITableViewRowAnimationTop];
 }
 
+
+- (NSIndexPath *)subrowIndexPathFromIndexPath:(NSIndexPath *)indexPath
+{
+    return [self correspondingIndexPathForRowAtIndexPath:indexPath];
+}
+
+- (NSIndexPath *) indexPathFromSubrowIndexPath:(NSIndexPath *)indexPath
+{
+    __block NSIndexPath *correspondingIndexPath = nil;
+    __block NSInteger expandedSubrows = 0;
+    
+    NSArray *rows = self.expandableCells[@(indexPath.section)];
+    [rows enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (idx < indexPath.row)
+        {
+            BOOL isExpanded = [obj[kIsExpandedKey] boolValue];
+            NSInteger numberOfSubrows = 0;
+            if (isExpanded)
+            {
+                numberOfSubrows = [obj[kSubrowsKey] integerValue];
+            }
+            
+            expandedSubrows += numberOfSubrows;
+        }
+        else
+        {
+            correspondingIndexPath = [NSIndexPath indexPathForRow:idx + expandedSubrows + indexPath.subRow   /* 1 for main row */
+                                                        inSection:indexPath.section];
+            
+            *stop = YES;
+        }
+    }];
+    
+    return correspondingIndexPath;
+}
+
 @end
 
 #pragma mark - NSIndexPath (SKSTableView)
@@ -718,7 +768,7 @@ static void *SubRowObjectKey;
 
 - (NSInteger)subRow
 {
-    id myclass = [self class];
+    id myclass = [self class];  // https://github.com/sakkaras/SKSTableView/issues/2
     id subRowObj = objc_getAssociatedObject(myclass, SubRowObjectKey);
     return [subRowObj integerValue];
 }
@@ -726,7 +776,7 @@ static void *SubRowObjectKey;
 - (void)setSubRow:(NSInteger)subRow
 {
     id subRowObj = [NSNumber numberWithInteger:subRow];
-    id myclass = [self class];
+    id myclass = [self class];  // https://github.com/sakkaras/SKSTableView/issues/2
     objc_setAssociatedObject(myclass, SubRowObjectKey, subRowObj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

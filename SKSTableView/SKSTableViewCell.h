@@ -25,6 +25,7 @@
  */
 @property (nonatomic, assign, getter = isExpanded) BOOL expanded;
 
+
 /**
  * Adds an indicator view into the receiver when the relevant cell is expanded.
  */
@@ -43,5 +44,7 @@
 - (BOOL)containsIndicatorView;
 
 - (void)accessoryViewAnimation;
+
+
 
 @end
