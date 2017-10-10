@@ -22,7 +22,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.expandable = YES;
-        self.accessoryViewLeft = YES;
+        self.accessoryViewLeft = NO;
         self.expanded = NO;
     }
     return self;
@@ -62,11 +62,12 @@ static UIImage *_image = nil;
 - (void)setExpandable:(BOOL)isExpandable
 {
     if (isExpandable)
-        if(_accessoryViewRight) {
-            [self setAccessoryView:[self expandableView]];
-        } else if(_accessoryViewLeft) {
-            self.imageView.image = [UIImage imageNamed:@"expandableImage.png"];
-        }
+       
+    if(_accessoryViewLeft == YES) {
+        [self setAccessoryView:[self expandableView]];
+    } else if(_accessoryViewLeft == NO){
+        self.imageView.image = [UIImage imageNamed:@"expandableImage.png"];
+    }
     
     _expandable = isExpandable;
 }
